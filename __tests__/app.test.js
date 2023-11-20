@@ -3,6 +3,7 @@ const db = require("../db/connection")
 const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data/index")
 const request = require("supertest")
+const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
     return seed(testData)
@@ -28,13 +29,26 @@ describe('GET /api/topics', () => {
             })
         })
     });
-    // test('400: returns message "Bad request." when path is invalid', () => {
-    //     return request(app)
-    //     .get("/api/topics/banana")
-    //     .expect(404)
-    //     .then(({body}) => {
-    //         console.log(body, "<--body")
-    //         expect(body.msg).toBe('Not Found')
-    //     })
-    // });
 });
+
+describe('GET /api', () => {
+    test('200: responds with an object describing all the available endpoints', () => {
+        return request(app)
+        .get("/api")
+        .then((response) => {
+            expect(response.status).toBe(200)
+            expect(response.body).toEqual(endpoints)
+        })
+    });
+});
+
+// describe('ANY /notapath', () => {
+//     test('404: responds with an error message if path does not exist', () => {
+//         return request(app)
+//         .get("/notapath")
+//         .expect(404)
+//         .then(({ body }) => {
+//             expect(body.msg).toBe('Path not found.')
+//         })
+//     });
+// });
