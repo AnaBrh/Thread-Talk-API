@@ -1,6 +1,6 @@
 const express = require("express")
 const { getTopics, getArticleById} = require("./Controllers/app.controller")
-const { handlePsqlErrs, handleCustomErrs, handleServerErrs } = require("./Errors/errors")
+const { handlePsqlErrs, handleCustomErrs, handleServerErrs, handle404 } = require("./Errors/errors")
 
 const app = express()
 
@@ -15,5 +15,7 @@ app.use(handlePsqlErrs)
 app.use(handleCustomErrs)
 
 app.use(handleServerErrs)
+
+app.use(handle404)
 
 module.exports = app

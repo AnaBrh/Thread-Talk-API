@@ -44,7 +44,7 @@ describe('GET /api/articles/:article_id', () => {
         return request(app)
         .get("/api/articles/1")
         .expect(200)
-        .then(({body}) => {
+        .then(({ body }) => {
             const { article } = body
             article.forEach((article) => {
                 expect(article.article_id).toBe(1)
@@ -59,6 +59,22 @@ describe('GET /api/articles/:article_id', () => {
                     article_img_url: expect.any(String)
                 })
             })
+        })
+    });
+    test('400: sends an error message when given an invalid id', () => {
+        return request(app)
+        .get("/api/articles/invalidId")
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request')
+        })
+    });
+    test('404: sends an error message when given a non-existent id ', () => {
+        return request(app)
+        .get("/api/articles/999")
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Not found')
         })
     });
 });
