@@ -1,5 +1,14 @@
 exports.handlePsqlErrs = (err, req, res, next) => {
     console.log(err, "<--err")
+    res.status(400).send({ msg: 'Bad request.'})
+}
+
+exports.handle404 = (err, req, res, next) => {
+    if (err.code === '404') {
+        res.status(404).send({ msg: 'Path not found.'})
+    } else {
+        next(err)
+    }
 }
 
 exports.handleCustomErrs = (err, req, res, next) => {
