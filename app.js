@@ -16,6 +16,4 @@ app.use(handleCustomErrs)
 
 app.use(handleServerErrs)
 
-app.use(handle404)
-
 module.exports = app
