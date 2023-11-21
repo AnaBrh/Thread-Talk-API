@@ -1,11 +1,20 @@
-const { getAllTopics, getSingleArticle, getCommsByArtcId } = require("../Models/app.model")
+const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId } = require("../Models/app.model")
+
 const devData = require("../db/data/development-data/index")
 const jestsorted = require("jest-sorted")
 
 exports.getTopics = (req, res, next) => {
     getAllTopics()
     .then((topics) => {
-        res.status(200).send({topics})
+        res.status(200).send({ topics })
+    })
+    .catch(next)
+}
+
+exports.getArticles = (req, res, next) => {
+    getAllArticles()
+    .then((articles) => {
+        res.status(200).send({ articles })
     })
     .catch(next)
 }
@@ -27,3 +36,4 @@ exports.getCommentsByArticleId = (req, res, next) => {
     })
     .catch(next)
 }
+
