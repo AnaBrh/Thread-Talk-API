@@ -1,6 +1,7 @@
 const db = require("../db/connection")
 const format = require("pg-format")
 const endpoints = require("../endpoints.json")
+const jestsorted = require("jest-sorted")
 
 exports.getAllTopics = () => {
     const queryStr = `SELECT * FROM topics `

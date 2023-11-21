@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data/index")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
+const jestsorted = require("jest-sorted")
 
 beforeEach(() => {
     return seed(testData)
@@ -88,6 +89,16 @@ describe('GET /api/articles', () => {
                 })
             })
     });
+    test('200: returns an array of sorted by date articles in descending order', () => {
+        return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body
+                expect(articles).toHaveLength(13)
+                expect(articles).toBeSortedBy("created_at", { descending: true })
+            });
+    });
 });
 
 describe('GET /api/articles/:article_id', () => {
@@ -129,5 +140,4 @@ describe('GET /api/articles/:article_id', () => {
             expect(body.msg).toBe('Not found')
         })
     });
-});
-
+})
