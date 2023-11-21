@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data/index")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
+const jestsorted = require("jest-sorted")
 
 beforeEach(() => {
     return seed(testData)
@@ -12,36 +13,6 @@ beforeEach(() => {
 afterAll(() => {
     return db.end()
 })
-
-describe('GET /api/topics', () => {
-    test('200: returns an array of all topics', () => {
-        return request(app)
-        .get("/api/topics")
-        .expect(200)
-        .then(({body}) => {
-            const { topics } = body
-            expect(topics).toHaveLength(3)
-            topics.forEach((topic) => {
-                expect(topic).toMatchObject({
-                    description: expect.any(String),
-                    slug: expect.any(String)
-                })
-            })
-        })
-    });
-});
-
-    //describe('ANY /notapath', () => {
-    // test('404: responds with an error message if path does not exist', () => {
-    //     return request(app)
-    //     .get("/api/topics/banana")
-    //     .expect(404)
-    //     .then(({body}) => {
-    //         console.log(body, "<--body")
-    //         expect(body.msg).toBe('Not Found')
-    //     })
-    //  });
-    //});
 
 describe('GET /api', () => {
     test('200: responds with an object describing all the available endpoints', () => {
@@ -54,6 +25,82 @@ describe('GET /api', () => {
     });
 });
 
+describe('GET /notAPath', () => {
+    test('404: responds with an error message if path does not exist', () => {
+        return request(app)
+        .get("/api/notapath")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Not Found')
+            })
+        });
+    });
+
+describe('ANY /invalidPath', () => {
+    test('404: responds with an error message if path is invalid', () => {
+        return request(app)
+        .get("/invalidpath")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Not Found')
+            })
+        });
+    });
+
+describe('GET /api/topics', () => {
+    test('200: returns an array of all topics and their properties', () => {
+        return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then(({body}) => {
+            const { topics } = body
+            expect(topics).toHaveLength(3)
+
+            topics.forEach((topic) => {
+                expect(topic).toMatchObject({
+                    description: expect.any(String),
+                    slug: expect.any(String)
+                })
+            })
+        })
+    });
+});
+
+describe('GET /api/articles', () => {
+    test('200: returns an array of all articles and their properties', () => {
+        return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body
+                expect(articles).toHaveLength(13)
+
+                articles.forEach((article) => {
+                    expect(article).toMatchObject({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        article_img_url: expect.any(String),
+                        comment_count: expect.any(String)
+                    })
+                })
+            })
+    });
+    test('200: returns an array of sorted by date articles in descending order', () => {
+        return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body
+                expect(articles).toHaveLength(13)
+                expect(articles).toBeSortedBy("created_at", { descending: true })
+            });
+    });
+});
+
 describe('GET /api/articles/:article_id', () => {
     test('200: accepts a article_id query which responds with all articles with that id', () => {
         return request(app)
@@ -63,6 +110,7 @@ describe('GET /api/articles/:article_id', () => {
             const { article } = body
             article.forEach((article) => {
                 expect(article.article_id).toBe(1)
+
                 expect(article).toMatchObject({
                     article_id: 1,
                     title: 'Living in the shadow of a great man',
@@ -92,5 +140,4 @@ describe('GET /api/articles/:article_id', () => {
             expect(body.msg).toBe('Not found')
         })
     });
-});
-
+})
