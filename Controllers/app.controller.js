@@ -1,4 +1,5 @@
-const { getAllTopics, getSingleArticle, getAllArticles } = require("../Models/app.model")
+const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId } = require("../Models/app.model")
+
 const devData = require("../db/data/development-data/index")
 const jestsorted = require("jest-sorted")
 
@@ -26,3 +27,13 @@ exports.getArticleById = (req, res, next) => {
     })
     .catch(next)
 }
+
+exports.getCommentsByArticleId = (req, res, next) => {
+    const { article_id } = req.params
+    getCommsByArtcId(article_id)
+    .then((comments) => {
+        res.status(200).send({ comments })
+    })
+    .catch(next)
+}
+
