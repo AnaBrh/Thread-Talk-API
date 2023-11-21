@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data/index")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
+const jestsorted = require("jest-sorted")
 
 beforeEach(() => {
     return seed(testData)
@@ -94,3 +95,51 @@ describe('GET /api/articles/:article_id', () => {
     });
 });
 
+describe('GET /api/articles/:article_id/comments', () => {
+    test('200: accepts an article_id query and returns an array of comments matching the id', () => {
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+            const { comments } = body
+            expect(comments).toHaveLength(11)
+
+            comments.forEach((comment) => {
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    votes: expect.any(Number),
+                    created_at: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    article_id: expect.any(Number)
+                })
+            })
+        })
+    });
+    test('200: correctly sorts the comments by the most recent first', () => {
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+            const { comments } = body
+            expect(comments).toHaveLength(11)
+            expect(comments).toBeSortedBy("created_at", { descending: true })
+        });
+    });
+    test('400: sends an error message when given an invalid article id', () => {
+        return request(app)
+        .get("/api/articles/invalidId/comments")
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request')
+        })
+    });
+    test('404: sends an error message when given a non-existent article id ', () => {
+        return request(app)
+        .get("/api/articles/9999/comments")
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Not found')
+        })
+    });
+});
