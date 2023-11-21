@@ -13,14 +13,48 @@ afterAll(() => {
     return db.end()
 })
 
+describe('GET /api', () => {
+    test('200: responds with an object describing all the available endpoints', () => {
+        return request(app)
+        .get("/api")
+        .then((response) => {
+            expect(response.status).toBe(200)
+            expect(response.body).toEqual(endpoints)
+        })
+    });
+});
+
+describe('GET /notAPath', () => {
+    test('404: responds with an error message if path does not exist', () => {
+        return request(app)
+        .get("/api/notapath")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Not Found')
+            })
+        });
+    });
+
+describe('ANY /invalidPath', () => {
+    test('404: responds with an error message if path is invalid', () => {
+        return request(app)
+        .get("/invalidpath")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Not Found')
+            })
+        });
+    });
+
 describe('GET /api/topics', () => {
-    test('200: returns an array of all topics', () => {
+    test('200: returns an array of all topics and their properties', () => {
         return request(app)
         .get("/api/topics")
         .expect(200)
         .then(({body}) => {
             const { topics } = body
             expect(topics).toHaveLength(3)
+
             topics.forEach((topic) => {
                 expect(topic).toMatchObject({
                     description: expect.any(String),
@@ -31,26 +65,28 @@ describe('GET /api/topics', () => {
     });
 });
 
-    //describe('ANY /notapath', () => {
-    // test('404: responds with an error message if path does not exist', () => {
-    //     return request(app)
-    //     .get("/api/topics/banana")
-    //     .expect(404)
-    //     .then(({body}) => {
-    //         console.log(body, "<--body")
-    //         expect(body.msg).toBe('Not Found')
-    //     })
-    //  });
-    //});
-
-describe('GET /api', () => {
-    test('200: responds with an object describing all the available endpoints', () => {
+describe('GET /api/articles', () => {
+    test('200: returns an array of all articles and their properties', () => {
         return request(app)
-        .get("/api")
-        .then((response) => {
-            expect(response.status).toBe(200)
-            expect(response.body).toEqual(endpoints)
-        })
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body
+                expect(articles).toHaveLength(13)
+
+                articles.forEach((article) => {
+                    expect(article).toMatchObject({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        article_img_url: expect.any(String),
+                        comment_count: expect.any(String)
+                    })
+                })
+            })
     });
 });
 
@@ -63,6 +99,7 @@ describe('GET /api/articles/:article_id', () => {
             const { article } = body
             article.forEach((article) => {
                 expect(article.article_id).toBe(1)
+
                 expect(article).toMatchObject({
                     article_id: 1,
                     title: 'Living in the shadow of a great man',
