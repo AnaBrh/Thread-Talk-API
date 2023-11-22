@@ -47,3 +47,18 @@ exports.getCommsByArtcId = (article_id) => {
         if (!rows.length) {
             return Promise.reject({ status: 404, msg: 'Not found'})
         }
+        return rows
+    })
+}
+
+exports.postCommentToArticle = (article_id, username, body) => {
+    const queryStr = `INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) RETURNING *;`
+    const queryVals = [article_id, username, body]
+    return db.query(queryStr,queryVals)
+    .then(({ rows }) => {
+        if (!rows.length) {
+            return Promise.reject({status: 404, msg: 'Not found'})
+        }
+        return rows[0]
+    })
+}
