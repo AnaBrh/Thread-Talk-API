@@ -204,7 +204,7 @@ describe('POST /api/articles/:article_id/comments', () => {
         .then(({ body }) => {
                 const { comment } = body
                     expect(comment).toMatchObject({
-                        comment_id: expect.any(Number),
+                        comment_id: 19,
                         votes: expect.any(Number),
                         created_at: expect.any(String),
                         author: expect.any(String),
@@ -213,4 +213,70 @@ describe('POST /api/articles/:article_id/comments', () => {
                     })
                 })
     });
-});
+    test('201: ignores unnecessary properties on the request body', () => {
+        const newComment = {
+            body: 'Hello, my name is lurker!',
+            username: 'lurker',
+            anotherProperty: 'Ignore me!',
+        };
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(201)
+        .then(({ body }) => {
+            const { comment } = body
+            expect(comment.unnecessaryProperty).toBeUndefined()
+        })
+    });
+    test('400: Bad request, invalid article id', () => {
+        const newComment = {
+            body: 'Hello, my name is lurker!',
+            username: 'lurker',
+        };
+        return request(app)
+        .post("/api/articles/notanumber/comments")
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+        });
+    });
+    test('404: Not found, article id does not exist', () => {
+        const newComment = {
+            body: 'Hello, my name is lurker!',
+            username: 'lurker',
+        };
+        return request(app)
+        .post("/api/articles/9999/comments")
+        .send(newComment)
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Not found');
+        });
+    });
+    test('400: Bad request, incomplete body', () => {
+        const incompleteComment = { 
+            username: 'lurker'
+        };
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(incompleteComment)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Bad request');
+            });
+    });
+    test('404: Not found, provided username does not exist', () => {
+        const notAUserComment = {
+            username: 'notauser',
+            body: 'My comment will not be posted :(',
+        };
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(notAUserComment)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Not found');
+            });
+        });
+    });
