@@ -1,5 +1,5 @@
 const express = require("express")
-const { getTopics, getArticles, getArticleById, getCommentsByArticleId, postComment, updateArticleById} = require("./Controllers/app.controller")
+const { getTopics, getArticles, getArticleById, getCommentsByArticleId, postComment, updateArticleById, deleteComment} = require("./Controllers/app.controller")
 const { handlePsqlErrs, handleCustomErrs, handleServerErrs } = require("./Errors/errors")
 
 const app = express()
@@ -22,6 +22,8 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
 app.post("/api/articles/:article_id/comments", postComment)
 
 app.patch("/api/articles/:article_id", updateArticleById)
+
+app.delete("/api/comments/:comment_id", deleteComment)
 
 app.all("*", (req, res) => {
     res.status(404).send({ msg: 'Not Found'})
