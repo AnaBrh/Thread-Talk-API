@@ -40,16 +40,14 @@ app.delete("/api/comments/:comment_id", deleteComment);
 
 app.get("/api/users", getUsers);
 
-app.get("")
-
-app.all("*", (req, res) => {
-	res.status(404).send({ msg: "Not Found" });
-});
-
 app.use(handlePsqlErrs);
 
 app.use(handleCustomErrs);
 
 app.use(handleServerErrs);
+
+app.all("*", (req, res) => {
+	res.status(404).send({ msg: "Not Found" });
+});
 
 module.exports = app;

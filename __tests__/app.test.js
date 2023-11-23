@@ -67,7 +67,7 @@ describe("GET /api/topics", () => {
 });
 
 describe("GET /api/articles", () => {
-	test("200: returns an array of all articles and their properties", () => {
+	test("200: returns an array of all articles and their properties if no query present", () => {
 		return request(app)
 			.get("/api/articles")
 			.expect(200)
@@ -97,6 +97,45 @@ describe("GET /api/articles", () => {
 				const { articles } = body;
 				expect(articles).toHaveLength(13);
 				expect(articles).toBeSortedBy("created_at", { descending: true });
+			});
+	});
+	test("200: returns an array of articles filtered by topic", () => {
+		return request(app)
+			.get("/api/articles?topic=mitch")
+			.expect(200)
+			.then(({ body }) => {
+				const { articles } = body;
+				expect(articles).toHaveLength(12);
+				articles.forEach((article) => {
+					expect(article).toMatchObject({
+						author: expect.any(String),
+						title: expect.any(String),
+						article_id: expect.any(Number),
+						topic: expect.any(String),
+						created_at: expect.any(String),
+						votes: expect.any(Number),
+						article_img_url: expect.any(String),
+						comment_count: expect.any(String),
+					});
+				});
+			});
+	});
+	test("200: returns an empty array when no articles on the topic", () => {
+		return request(app)
+			.get("/api/articles?topic=paper")
+			.expect(200)
+			.then(({ body }) => {
+				const { articles } = body;
+                console.log(body, "<--body")
+				expect(articles).toEqual([]);
+			});
+	});
+	test("404: returns a not found message for a topic that does not exist", () => {
+		return request(app)
+			.get("/api/articles?topic=nonexistenttopic")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe('Not found');
 			});
 	});
 });

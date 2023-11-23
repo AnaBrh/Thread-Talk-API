@@ -10,21 +10,29 @@ exports.getAllTopics = () => {
 	});
 };
 
-exports.getAllArticles = () => {
-	return db
-		.query(
-			`
+exports.getAllArticles = (topic) => {
+    let query = `
     SELECT 
     articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
     COUNT (comments.article_id)
     AS comment_count
     FROM articles
-    LEFT JOIN comments ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id
+    LEFT JOIN comments ON articles.article_id = comments.article_id`
+
+    const queryVals = []
+    if (topic) {
+        query += ` WHERE articles.topic = $1`
+        queryVals.push(topic)
+    }
+    query += 
+    ` GROUP BY articles.article_id 
     ORDER BY articles.created_at DESC`
-		)
+
+	return db
+		.query(query, queryVals)
 		.then(({ rows }) => {
-			return rows;
+            console.log("hi from app model")
+                return rows;
 		});
 };
 
