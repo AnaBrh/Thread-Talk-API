@@ -1,40 +1,55 @@
-const express = require("express")
-const { getTopics, getArticles, getArticleById, getCommentsByArticleId, postComment, updateArticleById, deleteComment, getUsers} = require("./Controllers/app.controller")
-const { handlePsqlErrs, handleCustomErrs, handleServerErrs } = require("./Errors/errors")
+const express = require("express");
+const {
+	getTopics,
+	getArticles,
+	getArticleById,
+	getCommentsByArticleId,
+	postComment,
+	updateArticleById,
+	deleteComment,
+	getUsers,
+} = require("./Controllers/app.controller");
+const {
+	handlePsqlErrs,
+	handleCustomErrs,
+	handleServerErrs,
+} = require("./Errors/errors");
 
-const app = express()
-const endpoints = require("./endpoints.json")
+const app = express();
+const endpoints = require("./endpoints.json");
 
-app.use(express.json())
+app.use(express.json());
 
 app.get("/api", (req, res) => {
-    res.json(endpoints)
-})
+	res.json(endpoints);
+});
 
-app.get("/api/topics", getTopics)
+app.get("/api/topics", getTopics);
 
-app.get("/api/articles", getArticles)
+app.get("/api/articles", getArticles);
 
-app.get("/api/articles/:article_id", getArticleById)
+app.get("/api/articles/:article_id", getArticleById);
 
-app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
-app.post("/api/articles/:article_id/comments", postComment)
+app.post("/api/articles/:article_id/comments", postComment);
 
-app.patch("/api/articles/:article_id", updateArticleById)
+app.patch("/api/articles/:article_id", updateArticleById);
 
-app.delete("/api/comments/:comment_id", deleteComment)
+app.delete("/api/comments/:comment_id", deleteComment);
 
-app.get("/api/users", getUsers)
+app.get("/api/users", getUsers);
+
+app.get("")
 
 app.all("*", (req, res) => {
-    res.status(404).send({ msg: 'Not Found'})
-})
+	res.status(404).send({ msg: "Not Found" });
+});
 
-app.use(handlePsqlErrs)
+app.use(handlePsqlErrs);
 
-app.use(handleCustomErrs)
+app.use(handleCustomErrs);
 
-app.use(handleServerErrs)
+app.use(handleServerErrs);
 
-module.exports = app
+module.exports = app;
