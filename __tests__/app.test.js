@@ -280,3 +280,88 @@ describe('POST /api/articles/:article_id/comments', () => {
             });
         });
     });
+
+    describe('PATCH /api/articles/:article_id', () => {
+        test('200: correctly updates the votes of an article by article id', () => {
+            const updatedVote = {
+                inc_votes: 10,
+            };
+    
+            return request(app)
+                .patch('/api/articles/1')
+                .send(updatedVote)
+                .expect(200)
+                .then(({ body }) => {
+                    const { article } = body;
+                    expect(article.article_id).toBe(1);
+                    expect(article.votes).toBe(110); 
+                });
+        });
+    
+        test('200: correctly updates the votes with negative value', () => {
+            const updatedVote = {
+                inc_votes: -20,
+            };
+    
+            return request(app)
+                .patch('/api/articles/1')
+                .send(updatedVote)
+                .expect(200)
+                .then(({ body }) => {
+                    const { article } = body;
+                    expect(article.article_id).toBe(1);
+                    expect(article.votes).toBe(80);
+                });
+        });
+    
+        test('200: correctly updates the votes when 0 is passed as value', () => {
+            const updatedVote = {
+                inc_votes: 0,
+            };
+    
+            return request(app)
+                .patch('/api/articles/1')
+                .send(updatedVote)
+                .expect(200)
+                .then(({ body }) => {
+                    const { article } = body;
+                    expect(article.article_id).toBe(1);
+                    expect(article.votes).toBe(100);
+                });
+        });
+    
+        test('400: bad request when no inc_votes provided', () => {
+            return request(app)
+                .patch('/api/articles/1')
+                .send({})
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request');
+                });
+        });
+    
+        test('400: sends bad request message when inc_votes is not a number', () => {
+            const updatedVote = {
+                inc_votes: 'invalid',
+            };
+    
+            return request(app)
+                .patch('/api/articles/1')
+                .send(updatedVote)
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request');
+                });
+        });
+    
+        test('404: sends not found message when article id does not exist', () => {
+            return request(app)
+                .patch('/api/articles/9999')
+                .send({ inc_votes: 5 })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Not found');
+                });
+        });
+    });
+    

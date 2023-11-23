@@ -70,3 +70,28 @@ exports.postCommentToArticle = (article_id, username, body) => {
         return rows[0]
     })
 }
+
+exports.updateArticleVotes = (article_id, inc_votes) => {
+    if (isNaN(inc_votes)) {
+        return Promise.reject({
+            status:400,
+            msg: 'Bad request'
+        })
+    }
+
+    const queryStr = `
+    UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;
+    `
+    const queryVals = [inc_votes, article_id]
+
+    return db.query(queryStr, queryVals)
+    .then(({ rows }) => {
+        if (!rows.length) {
+            return Promise.reject({
+                status: 404,
+                msg: 'Not found'
+            })
+        }
+        return rows[0]
+    })
+}
