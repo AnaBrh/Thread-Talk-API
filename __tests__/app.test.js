@@ -286,7 +286,6 @@ describe('POST /api/articles/:article_id/comments', () => {
             const updatedVote = {
                 inc_votes: 10,
             };
-    
             return request(app)
                 .patch('/api/articles/1')
                 .send(updatedVote)
@@ -297,12 +296,10 @@ describe('POST /api/articles/:article_id/comments', () => {
                     expect(article.votes).toBe(110); 
                 });
         });
-    
         test('200: correctly updates the votes with negative value', () => {
             const updatedVote = {
                 inc_votes: -20,
             };
-    
             return request(app)
                 .patch('/api/articles/1')
                 .send(updatedVote)
@@ -313,12 +310,10 @@ describe('POST /api/articles/:article_id/comments', () => {
                     expect(article.votes).toBe(80);
                 });
         });
-    
         test('200: correctly updates the votes when 0 is passed as value', () => {
             const updatedVote = {
                 inc_votes: 0,
             };
-    
             return request(app)
                 .patch('/api/articles/1')
                 .send(updatedVote)
@@ -329,7 +324,6 @@ describe('POST /api/articles/:article_id/comments', () => {
                     expect(article.votes).toBe(100);
                 });
         });
-    
         test('400: bad request when no inc_votes provided', () => {
             return request(app)
                 .patch('/api/articles/1')
@@ -339,12 +333,10 @@ describe('POST /api/articles/:article_id/comments', () => {
                     expect(body.msg).toBe('Bad request');
                 });
         });
-    
         test('400: sends bad request message when inc_votes is not a number', () => {
             const updatedVote = {
                 inc_votes: 'invalid',
             };
-    
             return request(app)
                 .patch('/api/articles/1')
                 .send(updatedVote)
@@ -362,6 +354,15 @@ describe('POST /api/articles/:article_id/comments', () => {
                 .then(({ body }) => {
                     expect(body.msg).toBe('Not found');
                 });
+        });
+        test('404: sends not found message when article id exists but is invalid', () => {
+            return request(app)
+            .patch('/api/articles/999')
+            .send({ inc_votes: 5 })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Not found')
+            })
         });
     });
     
