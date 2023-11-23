@@ -279,4 +279,28 @@ describe('POST /api/articles/:article_id/comments', () => {
                 expect(body.msg).toBe('Not found');
             });
         });
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+    test('204: successfully deletes a comment by comment_id', () => {
+        return request(app)
+        .delete('/api/comments/1')
+        .expect(204);
     });
+    test('400: invalid comment_id', () => {
+        return request(app)
+        .delete('/api/comments/invalidId')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request');
+            });
+        });
+    test('404: comment_id does not exist', () => {
+        return request(app)
+        .delete('/api/comments/9999')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Not found');
+        });
+    });
+});

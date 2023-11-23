@@ -70,3 +70,22 @@ exports.postCommentToArticle = (article_id, username, body) => {
         return rows[0]
     })
 }
+
+exports.deleteCommentById = (comment_id) => {
+    const queryStr = `
+    DELETE FROM comments 
+    WHERE comment_id = $1 
+    RETURNING *;
+    `
+    const queryVals = [comment_id]
+    return db.query(queryStr, queryVals)
+    .then(({ rows }) => {
+        if (!rows.length) {
+            return Promise.reject({
+                status: 404,
+                msg: 'Not found'
+            })
+        }
+        return rows[0]
+    })
+}
