@@ -111,7 +111,7 @@ describe("GET /api/articles", () => {
 						author: expect.any(String),
 						title: expect.any(String),
 						article_id: expect.any(Number),
-						topic: expect.any(String),
+						topic: "mitch",
 						created_at: expect.any(String),
 						votes: expect.any(Number),
 						article_img_url: expect.any(String),
@@ -126,7 +126,6 @@ describe("GET /api/articles", () => {
 			.expect(200)
 			.then(({ body }) => {
 				const { articles } = body;
-                console.log(body, "<--body")
 				expect(articles).toEqual([]);
 			});
 	});

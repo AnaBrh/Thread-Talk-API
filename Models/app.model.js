@@ -31,7 +31,6 @@ exports.getAllArticles = (topic) => {
 	return db
 		.query(query, queryVals)
 		.then(({ rows }) => {
-            console.log("hi from app model")
                 return rows;
 		});
 };
