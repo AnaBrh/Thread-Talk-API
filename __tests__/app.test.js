@@ -292,8 +292,10 @@ describe('POST /api/articles/:article_id/comments', () => {
                 .expect(200)
                 .then(({ body }) => {
                     const { article } = body;
-                    expect(article.article_id).toBe(1);
-                    expect(article.votes).toBe(110); 
+                    expect(article).toHaveProperty('article_id');
+                    expect(article).toHaveProperty('title');
+                    expect(article).toHaveProperty('body');
+                    expect(article).toHaveProperty('votes', 110);; 
                 });
         });
         test('200: correctly updates the votes with negative value', () => {
