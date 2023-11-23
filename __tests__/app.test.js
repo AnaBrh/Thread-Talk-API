@@ -279,9 +279,9 @@ describe('POST /api/articles/:article_id/comments', () => {
                 expect(body.msg).toBe('Not found');
             });
         });
-    });
+});
 
-    describe('GET /api/articles/:article_id', () => {
+ describe('PATCH /api/articles/:article_id', () => {
         test('200: correctly updates the votes of an article by article id', () => {
             const updatedVote = {
                 inc_votes: 10,
@@ -367,7 +367,30 @@ describe('POST /api/articles/:article_id/comments', () => {
             })
         });
     });
-    
+
+    describe('DELETE /api/comments/:comment_id', () => {
+    test('204: successfully deletes a comment by comment_id', () => {
+        return request(app)
+        .delete('/api/comments/1')
+        .expect(204);
+    });
+    test('400: invalid comment_id', () => {
+        return request(app)
+        .delete('/api/comments/invalidId')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request');
+            });
+        });
+    test('404: comment_id does not exist', () => {
+        return request(app)
+        .delete('/api/comments/9999')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Not found');
+        });
+    });
+});
     describe('GET /api/users', () => {
         test('200: returns an array of all topics and their properties', () => {
             return request(app)
@@ -387,3 +410,4 @@ describe('POST /api/articles/:article_id/comments', () => {
             })
         });
     });
+
