@@ -95,3 +95,11 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
         return rows[0]
     })
 }
+
+exports.getAllUsers = () => {
+    const queryStr = `SELECT * FROM users`
+    return db.query(queryStr)
+    .then(({ rows }) => {
+        return rows
+    })
+}
