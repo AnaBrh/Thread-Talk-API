@@ -1,4 +1,4 @@
-const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId, postCommentToArticle } = require("../Models/app.model")
+const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId, postCommentToArticle, updateArticleVotes } = require("../Models/app.model")
 
 const devData = require("../db/data/development-data/index")
 const jestsorted = require("jest-sorted")
@@ -44,6 +44,17 @@ exports.postComment = (req, res, next) => {
     postCommentToArticle(article_id, username, body)
     .then((comment) => {
         res.status(201).send({ comment })
+    })
+    .catch(next)
+}
+
+exports.updateArticleById = (req, res, next) => {
+    const { article_id } = req.params
+    const { inc_votes } = req.body
+
+    updateArticleVotes(article_id, inc_votes)
+    .then((article) => {
+        res.status(200).send({ article })
     })
     .catch(next)
 }
