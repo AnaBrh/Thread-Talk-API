@@ -1,4 +1,4 @@
-const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId, postCommentToArticle, , updateArticleVotes, deleteCommentById } = require("../Models/app.model")
+const { getAllTopics, getAllArticles, getSingleArticle, getCommsByArtcId, postCommentToArticle, updateArticleVotes, deleteCommentById, getAllUsers } = require("../Models/app.model")
 
 const devData = require("../db/data/development-data/index")
 const jestsorted = require("jest-sorted")
@@ -64,6 +64,14 @@ exports.deleteComment = (req, res, next) => {
     deleteCommentById(comment_id)
     .then(() => {
         res.status(204).send()
+    })
+    .catch(next)
+}
+
+exports.getUsers = (req, res, next) => {
+    getAllUsers()
+    .then((users) => {
+        res.status(200).send({ users })
     })
     .catch(next)
 }

@@ -367,8 +367,8 @@ describe('POST /api/articles/:article_id/comments', () => {
             })
         });
     });
-    
-describe('DELETE /api/comments/:comment_id', () => {
+
+    describe('DELETE /api/comments/:comment_id', () => {
     test('204: successfully deletes a comment by comment_id', () => {
         return request(app)
         .delete('/api/comments/1')
@@ -391,5 +391,23 @@ describe('DELETE /api/comments/:comment_id', () => {
         });
     });
 });
+    describe('GET /api/users', () => {
+        test('200: returns an array of all topics and their properties', () => {
+            return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({body}) => {
+                const { users } = body
+                expect(users).toHaveLength(4)
 
-   
+                users.forEach((user) => {
+                    expect(user).toMatchObject({
+                        username: expect.any(String),
+                        name: expect.any(String),
+                        avatar_url: expect.any(String)
+                    })
+                })
+            })
+        });
+    });
+
