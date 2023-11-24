@@ -16,9 +16,9 @@ You can access it [**here**](https://news-project-emah.onrender.com/api/).
 
 ### Steps required to run the code
 
-1. **Fork** this repo by clicking on the **Fork** icon in the top right of the page.
+1. **Fork** this repo by clicking on the icon in the top right of the page.
 
-2. **Clone** this repo by clicking the **<>Code** icon and copying the HTTPS url. Once the url is copied, go into your local terminal and run the following command once you're in the desired save location:
+2. **Clone** this repo by clicking the `<>Code` icon and copying the HTTPS url. Once the url is copied, go into your local terminal and run the following command once you're in the desired save location:
 
 ```
 git clone <paste url here>
