@@ -11,7 +11,7 @@
   },
   "GET /api/articles": {
     "description": "serves an array of all articles",
-    "queries": ["author", "topic", "sort_by", "order"],
+    "queries": ["topic"],
     "exampleResponse": {
       "articles": [
         {
@@ -54,6 +54,58 @@
       "votes": 0,
       "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
       "comment_count": "0"
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "allows user to create a new comment and responds with the new comment",
+    "queries": [],
+    "requestBody": {
+      "body": "string",
+      "username": "string"
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 19,
+        "body": "Hello, my name is lurker!",
+        "article_id": 1,
+        "author": "lurker",
+        "votes": 0,
+        "created_at": "2023-11-24T10:10:20.524Z"
+    }}
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "patches votes by article id and responds with the updated article",
+    "queries": [],
+    "requestBody": {
+      "keys": {
+        "inc_votes": "number"
+      }
+    },
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": "2020-07-09T20:11:00.000Z",
+        "votes": 110,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "allows user to delete a comment",
+    "queries": [],
+    "exampleResponse": ""
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "username": "icellusedkars",
+      "name": "sam",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
     }
   }
 }
