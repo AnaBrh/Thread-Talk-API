@@ -11,7 +11,6 @@ const {
 const { checkTopicExists } = require("../Models/topic.model");
 
 const devData = require("../db/data/development-data/index");
-const jestsorted = require("jest-sorted");
 
 exports.getTopics = (req, res, next) => {
 	getAllTopics()
