@@ -12,13 +12,13 @@ You can access it [**here**](https://news-project-emah.onrender.com/api/).
 
 - **Node**: minimum version v20.8.0, you can download Node.js [**here**](https://nodejs.org/en)
 - **PostgreSQL**: v15.4, install PostgreSQL by following the instructions on the official [**PostgreSQL website**](https://www.postgresql.org/download/)
-- **API Client**: Any API client can be used, but [**Insomnia**](https://insomnia.rest/download) is recommended for optimal testing and interaction with the Thread Talk API.
+- **API Client**: Any API client can be used, but [**Insomnia**](https://insomnia.rest/download) is recommended for optimal testing and interaction with the Thread Talk API
 
 ### Steps required to run the code
 
-1. Fork this repo by clicking on the **Fork** icon in the top right of the page.
+1. **Fork** this repo by clicking on the **Fork** icon in the top right of the page.
 
-2. Clone this repo by clicking the **<>Code** icon and copying the HTTPS url. Once the url is copied, go into your local terminal and run the following command once you're in the desired save location:
+2. **Clone** this repo by clicking the **<>Code** icon and copying the HTTPS url. Once the url is copied, go into your local terminal and run the following command once you're in the desired save location:
 
 ```
 git clone <paste url here>
