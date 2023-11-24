@@ -21,24 +21,24 @@ exports.getTopics = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-    const { topic } = req.query
-    const topicPromises = [getAllArticles(topic)]
+	const { topic } = req.query;
+	const topicPromises = [getAllArticles(topic)];
 
 	if (topic) {
-        topicPromises.push(checkTopicExists(topic))
-    }
-    Promise.all(topicPromises)
+		topicPromises.push(checkTopicExists(topic));
+	}
+	Promise.all(topicPromises)
 		.then((resolvedPromises) => {
-            const articles = resolvedPromises[0]
+			const articles = resolvedPromises[0];
 			res.status(200).send({ articles });
 		})
 		.catch(next);
 };
 
 exports.getArticleById = (req, res, next) => {
-    const { article_id } = req.params;
+	const { article_id } = req.params;
 	getSingleArticle(article_id)
-    .then((article) => {
+		.then((article) => {
 			res.status(200).send({ article });
 		})
 		.catch(next);

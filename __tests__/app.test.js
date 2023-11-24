@@ -55,7 +55,6 @@ describe("GET /api/topics", () => {
 			.then(({ body }) => {
 				const { topics } = body;
 				expect(topics).toHaveLength(3);
-
 				topics.forEach((topic) => {
 					expect(topic).toMatchObject({
 						description: expect.any(String),
@@ -74,7 +73,6 @@ describe("GET /api/articles", () => {
 			.then(({ body }) => {
 				const { articles } = body;
 				expect(articles).toHaveLength(13);
-
 				articles.forEach((article) => {
 					expect(article).toMatchObject({
 						author: expect.any(String),
@@ -134,7 +132,7 @@ describe("GET /api/articles", () => {
 			.get("/api/articles?topic=nonexistenttopic")
 			.expect(404)
 			.then(({ body }) => {
-				expect(body.msg).toBe('Not found');
+				expect(body.msg).toBe("Not found");
 			});
 	});
 });
@@ -146,37 +144,37 @@ describe("GET /api/articles/:article_id", () => {
 			.expect(200)
 			.then(({ body }) => {
 				const { article } = body;
-					expect(article).toMatchObject({
-						article_id: 1,
-						title: "Living in the shadow of a great man",
-						topic: "mitch",
-						author: "butter_bridge",
-						body: "I find this existence challenging",
-						created_at: "2020-07-09T20:11:00.000Z",
-						votes: 100,
-						article_img_url:
-							"https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-					});
+				expect(article).toMatchObject({
+					article_id: 1,
+					title: "Living in the shadow of a great man",
+					topic: "mitch",
+					author: "butter_bridge",
+					body: "I find this existence challenging",
+					created_at: "2020-07-09T20:11:00.000Z",
+					votes: 100,
+					article_img_url:
+						"https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+				});
 			});
 	});
-	test('200: returns all articles with the matching id, as well as the total comment count', () => {
+	test("200: returns all articles with the matching id, as well as the total comment count", () => {
 		return request(app)
 			.get("/api/articles/1")
 			.expect(200)
 			.then(({ body }) => {
 				const { article } = body;
-					expect(article).toMatchObject({
-						article_id: 1,
-						title: "Living in the shadow of a great man",
-						topic: "mitch",
-						author: "butter_bridge",
-						body: "I find this existence challenging",
-						comment_count: '11',
-						created_at: "2020-07-09T20:11:00.000Z",
-						votes: 100,
-						article_img_url:
-							"https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-					});
+				expect(article).toMatchObject({
+					article_id: 1,
+					title: "Living in the shadow of a great man",
+					topic: "mitch",
+					author: "butter_bridge",
+					body: "I find this existence challenging",
+					comment_count: "11",
+					created_at: "2020-07-09T20:11:00.000Z",
+					votes: 100,
+					article_img_url:
+						"https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+				});
 			});
 	});
 	test("400: sends an error message when given an invalid id", () => {
@@ -205,7 +203,6 @@ describe("GET /api/articles/:article_id/comments", () => {
 			.then(({ body }) => {
 				const { comments } = body;
 				expect(comments).toHaveLength(11);
-
 				comments.forEach((comment) => {
 					expect(comment).toMatchObject({
 						comment_id: expect.any(Number),
@@ -452,7 +449,6 @@ describe("GET /api/users", () => {
 			.then(({ body }) => {
 				const { users } = body;
 				expect(users).toHaveLength(4);
-
 				users.forEach((user) => {
 					expect(user).toMatchObject({
 						username: expect.any(String),
