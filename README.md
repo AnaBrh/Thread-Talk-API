@@ -6,13 +6,13 @@
 
 ## API
 
-You can access the **Thread Talk API** [**here**](https://news-project-emah.onrender.com/api/).
+You can access it [**here**](https://news-project-emah.onrender.com/api/).
 
 ### Minimum requirements
 
 - **Node**: minimum version v20.8.0, you can download Node.js [**here**](https://nodejs.org/en)
 - **PostgreSQL**: v15.4, install PostgreSQL by following the instructions on the official [**PostgreSQL website**](https://www.postgresql.org/download/)
-- **API Client**: Any API client can be used, but Insomnia is recommended for optimal testing and interaction with the Thread Talk API. Download it here. [Insomnia](https://insomnia.rest/download)
+- **API Client**: Any API client can be used, but [**Insomnia**](https://insomnia.rest/download) is recommended for optimal testing and interaction with the Thread Talk API.
 
 ### Steps required to run the code
 
