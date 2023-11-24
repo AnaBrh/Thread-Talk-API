@@ -43,6 +43,10 @@ After creating the .env files, make sure that they appear in the `.gitignored`.
 
 4. At this point you will need to install some dependencies and devDependencies to get the code running. You can do this by running `npm install` in your terminal.
 
+```
+npm install
+```
+
 5. Now that everything is installed and ready to go, it's time to run the scripts. Run the following commands in your terminal to set up the environment, seed the database and start the local server:
 
 ```
