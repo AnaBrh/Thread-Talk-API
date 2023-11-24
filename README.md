@@ -31,15 +31,14 @@ code <folder name>
 ```
 
 3. You will then need to create two `.env` files in the root folder. These files will be used by Dotenv to establish the connections with the correct databases.
-
->There is an example file `.env-example`, which shows the correct format required in the .env files. Make sure you link the correct databases to the correct .env files.
-
 You can find the database names in `/db/setup.sql`.
 
 ```
 .env.test
 .env.development
 ```
+>There is an example file `.env-example`, which shows the correct format required in the .env files. Make sure you link the correct databases to the correct .env files.
+
 After creating the .env files, make sure that they appear in the `.gitignored`.
 
 4. At this point you will need to install some dependencies and devDependencies to get the code running. You can do this by running `npm install` in your terminal.
