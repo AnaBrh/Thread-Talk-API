@@ -14,7 +14,7 @@ Nortchoders provided the data to work with, and I did the following:
 
 ## API
 
-You can access it [**here**](https://news-project-emah.onrender.com/api/).
+You can access it [**here**](https://thread-talk.onrender.com/api).
 
 ### Minimum requirements
 
@@ -63,7 +63,7 @@ npm run seed
 npm run start
 ```
 
-6. In order to make requests, open the API client and make requests from there. If unsure about the requests you can make, please refer to [`Thread Talk API`](https://news-project-emah.onrender.com/api/) for the paths available.
+6. In order to make requests, open the API client and make requests from there. If unsure about the requests you can make, please refer to [`Thread Talk API`](https://thread-talk.onrender.com/api) for the paths available.
 
 7. To test the code, just run the following command in your terminal:
 
