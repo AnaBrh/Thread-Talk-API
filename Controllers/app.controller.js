@@ -9,7 +9,8 @@ const {
 	getAllUsers,
 } = require("../Models/app.model");
 const { checkTopicExists } = require("../Models/topic.model");
-
+const { checkColumnExists } = require("../Models/column.model")
+const { checkOrderExists } = require("../Models/order.model")
 const devData = require("../db/data/development-data/index");
 
 exports.getTopics = (req, res, next) => {
@@ -21,8 +22,17 @@ exports.getTopics = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-	const { topic } = req.query;
-	const topicPromises = [getAllArticles(topic)];
+	const { topic, sort_by, order } = req.query;
+	
+	if (sort_by && !checkColumnExists(sort_by)) {
+        return res.status(400).json({ msg: 'Bad request' });
+    }
+
+    if (order && !checkOrderExists(order)) {
+        return res.status(400).json({ msg: 'Bad request' });
+    }
+
+	const topicPromises = [getAllArticles(topic, sort_by, order)];
 
 	if (topic) {
 		topicPromises.push(checkTopicExists(topic));

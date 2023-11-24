@@ -9,7 +9,7 @@ exports.getAllTopics = () => {
 	});
 };
 
-exports.getAllArticles = (topic) => {
+exports.getAllArticles = (topic, sort_by = 'created_at', order = 'DESC') => {
 	let query = `
     SELECT 
 	articles.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes, articles.article_img_url, 
@@ -17,15 +17,16 @@ exports.getAllArticles = (topic) => {
 	FROM articles 
 	LEFT JOIN comments ON articles.article_id = comments.article_id
 `;
-
 	const queryVals = [];
+
 	if (topic) {
 		query += ` WHERE articles.topic = $1`;
 		queryVals.push(topic);
 	}
+
 	query += ` 
-	GROUP BY articles.article_id 
-    ORDER BY articles.created_at DESC`;
+    GROUP BY articles.article_id
+    ORDER BY ${sort_by} ${order}`;
 
 	return db.query(query, queryVals).then(({ rows }) => {
 		return rows;

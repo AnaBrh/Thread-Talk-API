@@ -87,7 +87,7 @@ describe("GET /api/articles", () => {
 				});
 			});
 	});
-	test("200: returns an array of sorted by date articles in descending order", () => {
+	test("200: returns an array of articles sorted by created_at in descending order by default", () => {
 		return request(app)
 			.get("/api/articles")
 			.expect(200)
@@ -95,6 +95,26 @@ describe("GET /api/articles", () => {
 				const { articles } = body;
 				expect(articles).toHaveLength(13);
 				expect(articles).toBeSortedBy("created_at", { descending: true });
+			});
+	});
+	test('200: returns an array of articles sorted by a custom column in default descending order', () => {
+		return request(app)
+			.get("/api/articles?sort_by=article_id")
+			.expect(200)
+			.then(({ body }) => {
+				const { articles } = body;
+				expect(articles).toHaveLength(13);
+				expect(articles).toBeSortedBy("article_id", { descending: true });
+			});
+	});
+	test('200: returns an array of articles sorted by a custom column in ascending order', () => {
+		return request(app)
+			.get("/api/articles?sort_by=author&order=asc")
+			.expect(200)
+			.then(({ body }) => {
+				const { articles } = body;
+				expect(articles).toHaveLength(13);
+				expect(articles).toBeSortedBy("author", { ascending: true });
 			});
 	});
 	test("200: returns an array of articles filtered by topic", () => {
@@ -125,6 +145,22 @@ describe("GET /api/articles", () => {
 			.then(({ body }) => {
 				const { articles } = body;
 				expect(articles).toEqual([]);
+			});
+	});
+	test('400: returns an error for an invalid sort_by value', () => {
+		return request(app)
+			.get('/api/articles?sort_by=invalidColumn')
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe('Bad request');
+			});
+		});
+	test('400: returns an error for an invalid order value', () => {
+		return request(app)
+			.get('/api/articles?order=invalidOrder')
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe('Bad request');
 			});
 	});
 	test("404: returns a not found message for a topic that does not exist", () => {
