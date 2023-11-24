@@ -4,6 +4,14 @@
 
 **Thread Talk** is my first API project I created during my Software Development Bootcamp at Northcoders.  It's got cool features for handling users, creating posts, dropping comments, and even throwing in some votes. It's your go-to spot for all things chatting! 😄
 
+Nortchoders provided the data to work with, and I did the following:
+- Created and seeded databases using PostgreSQL and JavaScript, and established connections
+- Developed controllers and models, whilst following the MVC design pattern
+- Conducted thorough unit and integration testing with Jest and Supertest
+- Managed requests and errors efficiently
+- Hosted the application with Render
+
+
 ## API
 
 You can access it [**here**](https://news-project-emah.onrender.com/api/).
