@@ -41,7 +41,7 @@ You can find the database names in `/db/setup.sql`.
 
 After creating the .env files, make sure that they appear in the `.gitignored`.
 
-4. At this point you will need to install some **dependencies** and **devDependencies** to get the code running. You can do this by running the following command in your terminal:
+4. At this point you will need to install some dependencies and devDependencies to get the code running. You can do this by running the following command in your terminal:
 
 ```
 npm install
